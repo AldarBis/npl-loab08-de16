@@ -35,6 +35,8 @@ services:
       - postgres
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
@@ -44,6 +46,7 @@ services:
       - ./airflow/logs:/opt/airflow/logs
       - ./airflow/plugins:/opt/airflow/plugins
       - ./airflow/airflow.db:/opt/airflow/airflow.db
+      - ./downloads:/opt/airflow/downloads
     command: > 
       bash -c "airflow db init && airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email admin@example.com && exec airflow webserver & exec airflow scheduler"
 volumes:
